@@ -2,21 +2,16 @@
 #edinson Contreras Cogollo
 data(X1_2_DATOS_TALLER)
 View(X1_2_DATOS_TALLER)
-install.packages("tidyverse")
 install.packages("factoextra")
 install.packages("KMEANS.KNN")
-library(tidyverse)
 library(factoextra)
 library(KMEANS.KNN)
 # Scale the data
-df <- scale(X1_2_DATOS_TALLER[,-c(1:24,30:32)],center = TRUE,scale = TRUE)
-dg <- scale(X1_2_DATOS_TALLER[,c(25,26,27,28,29,33,35,36,37,38)],center = TRUE,scale = TRUE)
-educa = as.data.frame(dg)
-row.names(educa)<- make.names(X1_2_DATOS_TALLER$EDU_FATHER,unique = TRUE)
-
+df <- scale(X1_2_DATOS_TALLER[,-c(1:24,30:32)])
+dg <- scale(X1_2_DATOS_TALLER[,c(25,26,27,28,29,33,35,36,37)])
 
 # Compute hierarchical k-means clustering
-res.hk <-hkmeans(educa, 10)
+res.hk <-hkmeans(dg, 8)
 table(res.hk$cluster)
 ?hkmeans
 
@@ -26,11 +21,10 @@ names(res.hk)
 # Print the results
 res.hk
 
-
 # Visualize the tree
-hkmeans_tree(res.hk, cex = 0.2)
+hkmeans_tree(res.hk, cex = 0.6)
 # or use this
-fviz_dend(res.hk, cex = 0.2)
+fviz_dend(res.hk, cex = 0.6)
 
 # Visualize the hkmeans final clusters
 fviz_cluster(res.hk, frame.type = "norm", frame.level = 0.68)
@@ -50,4 +44,3 @@ fviz_dend(x = res.hk,
 
 fviz_nbclust(X1_2_DATOS_TALLER, FUNcluster = hkmeans, method = "silhouette", k.max = 5) +
   labs(title = "Número óptimo de clusters")
-
